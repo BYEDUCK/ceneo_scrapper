@@ -1,0 +1,5 @@
+scrap:
+  ceneo-base-url: https://www.ceneo.pl
+logging:
+  level:
+    reactor.netty.http.client: DEBUG
