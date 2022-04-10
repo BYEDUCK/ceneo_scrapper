@@ -1,6 +1,6 @@
 package com.byeduck.ceneoscrapper
 
-data class ProductScore(val score: Double, val maxScore: Int) {
+data class ProductScore(val score: Double, val maxScore: Int) : java.io.Serializable {
 
     companion object {
         fun parse(scoreStr: String): ProductScore = if (scoreStr.contains("/")) scoreStr.split("/").let {
