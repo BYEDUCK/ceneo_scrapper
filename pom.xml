@@ -10,13 +10,14 @@
   </parent>
   <groupId>com.byeduck</groupId>
   <artifactId>ceneo-scrapper</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>ceneo-scrapper</name>
   <description>ceneo-scrapper</description>
   <properties>
     <java.version>17</java.version>
     <kotlin.version>1.6.10</kotlin.version>
     <zalando.logbook.version>2.14.0</zalando.logbook.version>
+    <skipImagePush>true</skipImagePush>
   </properties>
   <dependencies>
     <dependency>
@@ -118,6 +119,28 @@
             <version>${kotlin.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <skip>${skipImagePush}</skip>
+          <from>
+            <image>openjdk:17.0.1-buster</image>
+          </from>
+          <to>
+            <image>docker.io/byeduck/ceneo_scrapper:${project.version}</image>
+          </to>
+        </configuration>
       </plugin>
     </plugins>
   </build>
