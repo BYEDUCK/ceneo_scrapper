@@ -18,10 +18,10 @@ class ScrapService(
     @Value("\${scrap.query-pages-count:1}") private val queryPagesCount: Long
 ) {
 
-    @UseCache("ceneo_categories")
+    @CacheMono("ceneo_categories")
     fun getCategories(): Mono<List<ProductCategory>> = Mono.just(ProductCategory.values().toList())
 
-    @UseCache
+    @CacheMono
     fun scrap(category: ProductCategory, query: String): Mono<List<Product>> =
         generateSequence(0) { it + 1 }.toFlux().take(queryPagesCount)
             .flatMap { queryForPage(category, query, it) }
