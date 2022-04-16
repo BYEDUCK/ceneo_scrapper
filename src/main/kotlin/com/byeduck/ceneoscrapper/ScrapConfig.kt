@@ -6,9 +6,14 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.context.annotation.Primary
-import org.springframework.data.redis.connection.RedisConnectionFactory
-import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
+import org.springframework.data.redis.core.ReactiveRedisOperations
+import org.springframework.data.redis.core.ReactiveRedisTemplate
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
+import org.springframework.data.redis.serializer.RedisSerializationContext
+import org.springframework.data.redis.serializer.RedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
@@ -18,6 +23,8 @@ import org.zalando.logbook.Logbook
 
 @Configuration
 @EnableConfigurationProperties(ScrapProperties::class)
+@EnableAspectJAutoProxy
+@EnableRedisRepositories
 class ScrapConfig {
 
     @Bean
@@ -33,12 +40,14 @@ class ScrapConfig {
         .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
     @Bean
-    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<Any, Any> =
-        RedisTemplate<Any, Any>().apply {
-            keySerializer = StringRedisSerializer()
-            hashKeySerializer = StringRedisSerializer()
-            setConnectionFactory(redisConnectionFactory)
-        }
+    fun redisOperations(redisConnectionFactory: ReactiveRedisConnectionFactory): ReactiveRedisOperations<String, Any> =
+        ReactiveRedisTemplate(
+            redisConnectionFactory,
+            RedisSerializationContext.newSerializationContext<String, Any>(StringRedisSerializer())
+                .value(RedisSerializer.java())
+                .hashKey(StringRedisSerializer())
+                .build()
+        )
 
     @Bean
     @Primary
