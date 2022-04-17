@@ -18,7 +18,6 @@ class ScrapService(
     @Value("\${scrap.query-pages-count:1}") private val queryPagesCount: Long
 ) {
 
-    @CacheMono("ceneo_categories")
     fun getCategories(): Mono<List<ProductCategory>> = Mono.just(ProductCategory.values().toList())
 
     @CacheMono

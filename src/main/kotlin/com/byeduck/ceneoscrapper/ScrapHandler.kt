@@ -15,7 +15,9 @@ class ScrapHandler(private val scrapService: ScrapService) {
     fun scrapCeneo(request: ServerRequest): Mono<ServerResponse> {
         val category =
             ProductCategory.parse(request.queryParam("category").orElseThrow { RuntimeException("Category required") })
-        val query = request.queryParam("q").orElseThrow { RuntimeException("Query required") }
+        val query = request.queryParam("q")
+            .filter { it.isNotBlank() }
+            .orElseThrow { RuntimeException("Query required") }
             .lowercase()
         return scrapService.scrap(category, query).transform { ServerResponse.ok().body(it) }
     }

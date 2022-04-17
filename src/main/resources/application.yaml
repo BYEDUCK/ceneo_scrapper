@@ -1,6 +1,7 @@
 scrap:
   ceneo-base-url: https://www.ceneo.pl
   query-pages-count: 3
+  cache-ttl: PT60M
 logging:
   level:
     reactor.netty.http.client: DEBUG
