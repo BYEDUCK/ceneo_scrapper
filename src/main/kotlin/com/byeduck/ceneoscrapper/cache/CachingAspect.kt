@@ -1,4 +1,4 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.cache
 
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around

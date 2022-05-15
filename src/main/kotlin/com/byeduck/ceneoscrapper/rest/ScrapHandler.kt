@@ -1,5 +1,7 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.rest
 
+import com.byeduck.ceneoscrapper.model.ProductCategory
+import com.byeduck.ceneoscrapper.scrap.ScrapService
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse

@@ -1,5 +1,8 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.scrap
 
+import com.byeduck.ceneoscrapper.model.Product
+import com.byeduck.ceneoscrapper.model.ProductCategory
+import com.byeduck.ceneoscrapper.model.ProductScore
 import org.jsoup.Jsoup
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component

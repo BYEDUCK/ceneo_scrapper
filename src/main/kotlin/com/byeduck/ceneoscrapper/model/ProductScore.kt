@@ -1,4 +1,4 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.model
 
 data class ProductScore(val score: Double, val maxScore: Int) : java.io.Serializable {
 

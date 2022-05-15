@@ -1,4 +1,4 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.scrap
 
 const val PRODUCT_ROW_CLASS = "cat-prod-row"
 const val PRODUCT_ROW_NAME_SELECTOR = "strong.cat-prod-row__name"

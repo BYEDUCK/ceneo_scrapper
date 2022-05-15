@@ -1,5 +1,6 @@
 package com.byeduck.ceneoscrapper
 
+import com.byeduck.ceneoscrapper.scrap.ScrapProperties
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule

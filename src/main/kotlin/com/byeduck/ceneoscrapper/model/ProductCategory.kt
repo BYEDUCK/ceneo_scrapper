@@ -1,4 +1,4 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.model
 
 enum class ProductCategory(val id: String) {
     SMARTPHONES("Smartfony"),

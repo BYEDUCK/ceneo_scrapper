@@ -1,5 +1,8 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.scrap
 
+import com.byeduck.ceneoscrapper.cache.CacheMono
+import com.byeduck.ceneoscrapper.model.Product
+import com.byeduck.ceneoscrapper.model.ProductCategory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType

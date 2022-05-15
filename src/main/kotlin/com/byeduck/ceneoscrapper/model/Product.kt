@@ -1,4 +1,4 @@
-package com.byeduck.ceneoscrapper
+package com.byeduck.ceneoscrapper.model
 
 import java.math.BigDecimal
 
