@@ -3,6 +3,7 @@ package com.byeduck.ceneoscrapper.scrap
 import com.byeduck.ceneoscrapper.cache.CacheMono
 import com.byeduck.ceneoscrapper.model.Product
 import com.byeduck.ceneoscrapper.model.ProductCategory
+import com.byeduck.ceneoscrapper.rest.CeneoFilter
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
@@ -24,19 +25,25 @@ class ScrapService(
     fun getCategories(): Mono<List<ProductCategory>> = Mono.just(ProductCategory.values().toList())
 
     @CacheMono
-    fun scrap(category: ProductCategory, query: String): Mono<List<Product>> =
+    fun scrap(category: ProductCategory, filter: CeneoFilter): Mono<List<Product>> =
         generateSequence(0) { it + 1 }.toFlux().take(queryPagesCount)
-            .flatMap { queryForPage(category, query, it) }
-            .flatMap { Flux.fromIterable(scrapper.scrapCeneoPage(it, scrapper.createCacheKey(category, query))) }
+            .flatMap { queryForPage(category, filter, it) }
+            .flatMap { Flux.fromIterable(scrapper.scrapCeneoPage(it, scrapper.createCacheKey(category, filter))) }
             .collectList()
 
-    private fun queryForPage(category: ProductCategory, query: String, pageNum: Int): Mono<String> {
+    private fun queryForPage(category: ProductCategory, filter: CeneoFilter, pageNum: Int): Mono<String> {
         return webClient.get().uri(
-            "/${category.id};szukaj-${URLEncoder.encode(query, StandardCharsets.UTF_8)}${pageUrlPartTemplate(pageNum)}"
+            "/${category.id};" + queryUrlPart(filter) + pageUrlPart(pageNum)
         )
             .accept(MediaType.TEXT_HTML)
             .exchangeToMono { it.bodyToMono(String::class.java) }
     }
 
-    private fun pageUrlPartTemplate(pageNum: Int) = if (pageNum == 0) "" else ";0020-30-0-0-${pageNum}.htm"
+    private fun queryUrlPart(filter: CeneoFilter) =
+        "szukaj-${URLEncoder.encode(filter.query, StandardCharsets.UTF_8)};" +
+                filter.minPrice.map { "m$it;" }.orElse("") +
+                filter.maxPrice.map { "n$it;" }.orElse("")
+
+
+    private fun pageUrlPart(pageNum: Int) = if (pageNum == 0) "" else "0020-30-0-0-${pageNum}.htm"
 }

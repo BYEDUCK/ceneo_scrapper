@@ -3,6 +3,7 @@ package com.byeduck.ceneoscrapper.scrap
 import com.byeduck.ceneoscrapper.model.Product
 import com.byeduck.ceneoscrapper.model.ProductCategory
 import com.byeduck.ceneoscrapper.model.ProductScore
+import com.byeduck.ceneoscrapper.rest.CeneoFilter
 import org.jsoup.Jsoup
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
@@ -25,7 +26,8 @@ class Scrapper {
             return@map Product(productName, productPrice, ProductScore.parse(productScore))
         }.drop(1) // first product is not correlated with query
 
-    fun createCacheKey(category: ProductCategory, query: String): String = "$category:$query"
+    fun createCacheKey(category: ProductCategory, filter: CeneoFilter): String =
+        "$category:${filter.query}:${filter.minPrice}:${filter.maxPrice}"
 
     private fun String.sanitize(): String = this.replace("\\s".toRegex(), "").replace(",", ".")
 }
