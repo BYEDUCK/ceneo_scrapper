@@ -2,7 +2,7 @@ package com.byeduck.ceneoscrapper.scrap
 
 import com.byeduck.ceneoscrapper.model.Product
 import com.byeduck.ceneoscrapper.model.ProductCategory
-import com.byeduck.ceneoscrapper.model.ProductScore
+import com.byeduck.ceneoscrapper.model.ProductReviewScore
 import com.byeduck.ceneoscrapper.rest.CeneoFilter
 import org.jsoup.Jsoup
 import org.springframework.cache.annotation.Cacheable
@@ -23,7 +23,7 @@ class Scrapper {
             val productPrice = BigDecimal.valueOf(
                 (productPriceInt.sanitize() + productPriceDec.replace(",", ".").sanitize()).toDouble()
             )
-            return@map Product(productName, productPrice, ProductScore.parse(productScore))
+            return@map Product(productName, productPrice, ProductReviewScore.parse(productScore))
         }.drop(1) // first product is not correlated with query
 
     fun createCacheKey(category: ProductCategory, filter: CeneoFilter): String =
