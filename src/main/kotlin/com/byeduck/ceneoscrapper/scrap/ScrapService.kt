@@ -33,17 +33,22 @@ class ScrapService(
 
     private fun queryForPage(category: ProductCategory, filter: CeneoFilter, pageNum: Int): Mono<String> {
         return webClient.get().uri(
-            "/${category.id};" + queryUrlPart(filter) + pageUrlPart(pageNum)
+            "/${category.id};" + queryUrlPart(filter, pageNum)
         )
             .accept(MediaType.TEXT_HTML)
             .exchangeToMono { it.bodyToMono(String::class.java) }
     }
 
-    private fun queryUrlPart(filter: CeneoFilter) =
-        "szukaj-${URLEncoder.encode(filter.query, StandardCharsets.UTF_8)};" +
-                filter.minPrice.map { "m$it;" }.orElse("") +
-                filter.maxPrice.map { "n$it;" }.orElse("")
+    private fun queryUrlPart(filter: CeneoFilter, pageNum: Int): String {
+        val suffix = pageUrlPart(pageNum)
+        val query = "szukaj-${URLEncoder.encode(filter.query, StandardCharsets.UTF_8)}"
+        val minPrice = filter.minPrice.map { "m$it" }.orElse("")
+        val maxPrice = filter.maxPrice.map { "n$it" }.orElse("")
+        return listOf(query, minPrice, maxPrice, suffix)
+            .filter { it.isNotBlank() }
+            .joinToString(";") + ".htm"
+    }
 
 
-    private fun pageUrlPart(pageNum: Int) = if (pageNum == 0) "" else "0020-30-0-0-${pageNum}.htm"
+    private fun pageUrlPart(pageNum: Int) = if (pageNum == 0) "" else "0020-30-0-0-${pageNum}"
 }
