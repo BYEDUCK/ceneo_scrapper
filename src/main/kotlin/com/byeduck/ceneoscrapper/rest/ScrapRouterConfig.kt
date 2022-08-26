@@ -12,6 +12,7 @@ class ScrapRouterConfig {
         "/api".nest {
             "/scrap".nest {
                 GET("", scrapHandler::scrapCeneo)
+                GET("/sample", scrapHandler::scrapCeneoSample)
                 GET("/categories", scrapHandler::getCategories)
             }
         }
