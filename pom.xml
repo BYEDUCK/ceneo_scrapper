@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.byeduck</groupId>
   <artifactId>ceneo-scrapper</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.5</version>
   <name>ceneo-scrapper</name>
   <description>ceneo-scrapper</description>
   <properties>
